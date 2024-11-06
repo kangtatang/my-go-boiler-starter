@@ -7,31 +7,6 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-// func Login(jwtSecret string) fiber.Handler {
-// 	return func(c *fiber.Ctx) error {
-// 		username := c.FormValue("username")
-// 		password := c.FormValue("password")
-
-// 		// Pengecekan username dan password
-// 		// (contoh sederhana, tambahkan hashing dan validasi lebih lanjut untuk produksi)
-// 		if username != "admin" || password != "password" {
-// 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "invalid credentials"})
-// 		}
-
-// 		token := jwt.New(jwt.SigningMethodHS256)
-// 		claims := token.Claims.(jwt.MapClaims)
-// 		claims["name"] = username
-// 		claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
-
-// 		t, err := token.SignedString([]byte(jwtSecret))
-// 		if err != nil {
-// 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "could not generate token"})
-// 		}
-
-// 		return c.JSON(fiber.Map{"token": t})
-// 	}
-// }
-
 type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`

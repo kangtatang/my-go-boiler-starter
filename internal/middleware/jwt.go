@@ -29,28 +29,3 @@ func JWTProtected(secret string) fiber.Handler {
 		return c.Next()
 	}
 }
-
-// func JWTProtected(secret string) fiber.Handler {
-// 	return func(c *fiber.Ctx) error {
-// 		tokenString := c.Get("Authorization")
-// 		if tokenString == "" {
-// 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "missing or malformed JWT"})
-// 		}
-
-// 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-// 			return []byte(secret), nil
-// 		})
-
-// 		if err != nil || !token.Valid {
-// 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "invalid or expired JWT"})
-// 		}
-
-// 		return c.Next()
-// 	}
-// }
-
-// func LogToElk(message string) {
-// 	client, _ := elasticsearch.NewDefaultClient()
-// 	// Log handling and error reporting here
-// 	log.Println(message) // Placeholder for logging to ELK
-// }

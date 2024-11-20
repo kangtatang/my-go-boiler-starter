@@ -1,12 +1,12 @@
 app:
   port: 8080
-  jwt_secret: thisisjustmysecretkeys2024
+  jwt_secret: whatIsTheSecretAbout78
 database:
   host: localhost
   port: 5432
   user: postgres
   password: password
-  dbname: your_db
+  dbname: boiler_db
 logging:
   elk_host: "localhost:9200"
   apm_host: "localhost:8200"

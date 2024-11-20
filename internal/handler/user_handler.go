@@ -54,7 +54,7 @@ type UpdateUserResponse struct {
 // @Param username query string false "Filter by username"
 // @Success 200 {object} GetAllUsersResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /users [get]
+// @Router /api/users [get]
 func (h *UserHandler) GetAllUsers(c *fiber.Ctx) error {
 	page := c.QueryInt("page", 1)              // Default page 1
 	limit := c.QueryInt("limit", 10)           // Default limit 10
@@ -90,7 +90,7 @@ func (h *UserHandler) GetAllUsers(c *fiber.Ctx) error {
 // @Success 200 {object} models.User
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /users/{id} [get]
+// @Router /api/users/{id} [get]
 func (h *UserHandler) GetUserByID(c *fiber.Ctx) error {
 	id := c.Params("id")
 	if _, err := uuid.Parse(id); err != nil {
@@ -120,8 +120,9 @@ type CreateUserRequest struct {
 // @Param createUserRequest body CreateUserRequest true "Create User Request"
 // @Success 201 {object} handler.CreateUserResponse
 // @Failure 400 {object} ErrorResponse
+// @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /users [post]
+// @Router /api/users [post]
 func (h *UserHandler) CreateUser(c *fiber.Ctx) error {
 	var req CreateUserRequest
 	if err := c.BodyParser(&req); err != nil {
@@ -205,7 +206,7 @@ type EditUserRequest struct {
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /users/{id} [put]
+// @Router /api/users/{id} [put]
 func (h *UserHandler) UpdateUser(c *fiber.Ctx) error {
 	userID := c.Params("id")
 
@@ -272,7 +273,7 @@ func (h *UserHandler) UpdateUser(c *fiber.Ctx) error {
 // @Success 204 {object} nil
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /users/{id} [delete]
+// @Router /api/users/{id} [delete]
 func (h *UserHandler) DeleteUser(c *fiber.Ctx) error {
 	userID := c.Params("id")
 

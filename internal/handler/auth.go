@@ -39,7 +39,7 @@ type ProfileResponse struct {
 // @Success 200 {object} LoginResponse
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
-// @Router /login [post]
+// @Router /api/login [post]
 func Login(jwtSecret string, userService service.UserService) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var loginReq LoginRequest
@@ -84,7 +84,7 @@ func Login(jwtSecret string, userService service.UserService) fiber.Handler {
 // @Description Get user profile information
 // @Produce json
 // @Success 200 {object} ProfileResponse
-// @Router /profile [get]
+// @Router /api/profile [get]
 func Profile(c *fiber.Ctx) error {
 	return c.JSON(ProfileResponse{Message: "Welcome to your profile!"})
 }

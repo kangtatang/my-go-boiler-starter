@@ -137,7 +137,7 @@ info:
   title: Sat Net Base User Management API
   version: "1.0"
 paths:
-  /login:
+  /api/login:
     post:
       consumes:
       - application/json
@@ -165,7 +165,7 @@ paths:
           schema:
             $ref: '#/definitions/handler.ErrorResponse'
       summary: Login
-  /profile:
+  /api/profile:
     get:
       description: Get user profile information
       produces:
@@ -176,7 +176,7 @@ paths:
           schema:
             $ref: '#/definitions/handler.ProfileResponse'
       summary: Profile
-  /users:
+  /api/users:
     get:
       description: Retrieve a list of users with pagination, filtering, and sorting
       parameters:
@@ -233,12 +233,16 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/handler.ErrorResponse'
       summary: Create a new user
-  /users/{id}:
+  /api/users/{id}:
     delete:
       description: Delete a user by their ID
       parameters:

@@ -134,7 +134,7 @@ host: localhost:8080
 info:
   contact: {}
   description: This is a User Management API.
-  title: My API
+  title: Sat Net Base User Management API
   version: "1.0"
 paths:
   /login:
@@ -239,6 +239,28 @@ paths:
             $ref: '#/definitions/handler.ErrorResponse'
       summary: Create a new user
   /users/{id}:
+    delete:
+      description: Delete a user by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Delete a user
     get:
       description: Retrieve a user by their ID
       parameters:

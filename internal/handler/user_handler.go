@@ -48,6 +48,7 @@ type UpdateUserResponse struct {
 // @Summary Get all users
 // @Description Retrieve a list of users with pagination, filtering, and sorting
 // @Produce json
+// @Security BearerAuth
 // @Param page query int false "Page number" default(1)
 // @Param limit query int false "Number of users per page" default(10)
 // @Param sort query string false "Sorting criteria" default("created_at desc")
@@ -86,6 +87,7 @@ func (h *UserHandler) GetAllUsers(c *fiber.Ctx) error {
 // @Summary Get user by ID
 // @Description Retrieve a user by their ID
 // @Produce json
+// @Security BearerAuth
 // @Param id path string true "User ID"
 // @Success 200 {object} models.User
 // @Failure 400 {object} ErrorResponse
@@ -117,6 +119,7 @@ type CreateUserRequest struct {
 // @Description Create a new user with the provided details
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param createUserRequest body CreateUserRequest true "Create User Request"
 // @Success 201 {object} handler.CreateUserResponse
 // @Failure 400 {object} ErrorResponse
@@ -200,6 +203,7 @@ type EditUserRequest struct {
 // @Description Update user details by their ID
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param id path string true "User ID"
 // @Param editUserRequest body EditUserRequest true "Edit User Request"
 // @Success 200 {object} UpdateUserResponse
@@ -269,6 +273,7 @@ func (h *UserHandler) UpdateUser(c *fiber.Ctx) error {
 // @Summary Delete a user
 // @Description Delete a user by their ID
 // @Produce json
+// @Security BearerAuth
 // @Param id path string true "User ID"
 // @Success 204 {object} nil
 // @Failure 404 {object} ErrorResponse

@@ -19,6 +19,9 @@ import (
 // @description This is a User Management API.
 // @host localhost:8080
 // @BasePath /
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 	// Load config
 	cfg, err := config.LoadConfig()

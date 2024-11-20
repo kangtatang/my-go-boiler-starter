@@ -1,12 +1,14 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
 
 type UserRole struct {
-	gorm.Model
-	UserID uuid.UUID `gorm:"type:uuid"`
-	RoleID uint
+	UserID    uuid.UUID `gorm:"type:uuid"`
+	RoleID    uint
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

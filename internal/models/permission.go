@@ -1,9 +1,12 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+)
 
 type Permission struct {
-	gorm.Model
-	ID   uint   `gorm:"primaryKey"`
-	Name string `gorm:"unique;not null"`
+	ID        uint      `gorm:"primaryKey"`
+	Name      string    `gorm:"unique;not null"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

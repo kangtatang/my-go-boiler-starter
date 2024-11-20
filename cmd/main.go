@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	_ "project/docs"
 	"project/internal/routes"
 	"project/internal/utils/validator"
 	"project/pkg/config"
@@ -10,8 +11,14 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	fiberSwagger "github.com/swaggo/fiber-swagger"
 )
 
+// @title Sat Net Base User Management API
+// @version 1.0
+// @description This is a User Management API.
+// @host localhost:8080
+// @BasePath /
 func main() {
 	// Load config
 	cfg, err := config.LoadConfig()
@@ -24,6 +31,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
+
+	// userRepo := repository.NewUserRepository(db)
+	// userService := service.NewUserService(userRepo)
+	// userHandler := handler.NewUserHandler(userService)
 
 	// Migrate the database
 	if err := database.MigrateDatabase(db); err != nil {
@@ -48,6 +59,9 @@ func main() {
 
 	// Initialize routes dan injeksikan dependensi
 	routes.InitializeRoutes(app, db, cfg)
+
+	// Swagger route
+	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 
 	// Start server
 	if err := app.Listen(":" + cfg.App.Port); err != nil {

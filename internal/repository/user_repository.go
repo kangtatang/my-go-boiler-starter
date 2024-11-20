@@ -12,8 +12,10 @@ type UserRepository interface {
 	GetUserByID(id string) (models.User, error)
 	GetUserByUsername(username string) (models.User, error)
 	CreateUser(user *models.User) error
-	UpdateUser(user *models.User) error
+	// UpdateUser(user *models.User) error
+	UpdateUser(id string, user *models.User) error
 	DeleteUser(id string) error
+	FindByID(id string) (*models.User, error)
 }
 
 type userRepository struct {
@@ -83,9 +85,20 @@ func (r *userRepository) CreateUser(user *models.User) error {
 	return r.db.Create(user).Error
 }
 
-// UpdateUser memperbarui informasi pengguna di database
-func (r *userRepository) UpdateUser(user *models.User) error {
-	return r.db.Save(user).Error
+// FindByID retrieves a user by ID.
+func (r *userRepository) FindByID(id string) (*models.User, error) {
+	var user models.User
+	if err := r.db.First(&user, "id = ?", id).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (r *userRepository) UpdateUser(id string, user *models.User) error {
+	if err := r.db.Model(&models.User{}).Where("id = ?", id).Updates(user).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 // DeleteUser menghapus pengguna berdasarkan ID
@@ -97,99 +110,3 @@ func (r *userRepository) DeleteUser(id string) error {
 
 	return r.db.Delete(&models.User{}, "id = ?", parsedID).Error
 }
-
-// package repository
-
-// import (
-// 	"fmt"
-// 	"project/internal/models"
-
-// 	"gorm.io/gorm"
-// )
-
-// // UserRepository adalah interface untuk repositori user
-// type UserRepository interface {
-// 	GetAllUsers(page, limit int, sort string, filter map[string]interface{}) ([]models.User, int64, error)
-// 	GetUserByID(id string) (models.User, error)
-// 	CreateUser(user *models.User) error
-// 	UpdateUser(user *models.User) error
-// 	DeleteUser(id string) error
-// }
-
-// // userRepository adalah implementasi dari UserRepository
-// type userRepository struct {
-// 	db *gorm.DB
-// }
-
-// // NewUserRepository adalah constructor untuk membuat instansi baru userRepository
-// func NewUserRepository(db *gorm.DB) UserRepository {
-// 	return &userRepository{db}
-// }
-
-// // GetAllUsers untuk mengambil semua user dengan pagination, sorting, dan filtering
-// func (r *userRepository) GetAllUsers(page, limit int, sort string, filter map[string]interface{}) ([]models.User, int64, error) {
-// 	var users []models.User
-// 	var total int64
-
-// 	// Menghitung jumlah total data
-// 	if err := r.db.Model(&models.User{}).Count(&total).Error; err != nil {
-// 		return nil, 0, err
-// 	}
-
-// 	// Membuat query dasar untuk mengambil data
-// 	query := r.db.Model(&models.User{})
-
-// 	// Mengaplikasikan filter jika ada
-// 	for key, value := range filter {
-// 		query = query.Where(fmt.Sprintf("%s = ?", key), value)
-// 	}
-
-// 	// Menambahkan sorting
-// 	if sort != "" {
-// 		query = query.Order(sort)
-// 	} else {
-// 		// Jika tidak ada sorting, menggunakan urutan default berdasarkan ID
-// 		query = query.Order("id desc")
-// 	}
-
-// 	// Mengaplikasikan pagination
-// 	offset := (page - 1) * limit
-// 	if err := query.Offset(offset).Limit(limit).Find(&users).Error; err != nil {
-// 		return nil, 0, err
-// 	}
-
-// 	return users, total, nil
-// }
-
-// // GetUserByID untuk mengambil user berdasarkan ID
-// func (r *userRepository) GetUserByID(id string) (models.User, error) {
-// 	var user models.User
-// 	if err := r.db.Where("id = ?", id).First(&user).Error; err != nil {
-// 		return user, err
-// 	}
-// 	return user, nil
-// }
-
-// // CreateUser untuk menambahkan user baru ke database
-// func (r *userRepository) CreateUser(user *models.User) error {
-// 	if err := r.db.Create(user).Error; err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }
-
-// // UpdateUser untuk memperbarui data user berdasarkan ID
-// func (r *userRepository) UpdateUser(user *models.User) error {
-// 	if err := r.db.Save(user).Error; err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }
-
-// // DeleteUser untuk menghapus user berdasarkan ID
-// func (r *userRepository) DeleteUser(id string) error {
-// 	if err := r.db.Where("id = ?", id).Delete(&models.User{}).Error; err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }

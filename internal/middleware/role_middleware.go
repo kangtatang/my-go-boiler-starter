@@ -46,19 +46,3 @@ func RequirePermission(requiredPermission string, userService service.UserServic
 		return c.Next()
 	}
 }
-
-// package middleware
-
-// import (
-// 	"github.com/gofiber/fiber/v2"
-// )
-
-// func RequireAdminRole() fiber.Handler {
-// 	return func(c *fiber.Ctx) error {
-// 		userRole := c.Locals("userRole")
-// 		if userRole != "admin" {
-// 			return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"error": "Access denied"})
-// 		}
-// 		return c.Next()
-// 	}
-// }

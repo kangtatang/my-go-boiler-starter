@@ -10,10 +10,36 @@ import (
 )
 
 type LoginRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string `json:"username" validate:"required,email"` // Validasi email untuk username
+	Password string `json:"password" validate:"required,min=6"`
+	// Username string `json:"username"`
+	// Password string `json:"password"`
 }
 
+// LoginResponse mendeskripsikan respons sukses untuk login
+type LoginResponse struct {
+	Token string `json:"token"`
+}
+
+// ErrorResponse mendeskripsikan struktur respons error
+type ErrorResponse struct {
+	Error string `json:"error"`
+}
+
+// Define a custom response struct for the profile response
+type ProfileResponse struct {
+	Message string `json:"message"`
+}
+
+// @Summary Login
+// @Description Authenticate user and return JWT token
+// @Accept json
+// @Produce json
+// @Param loginRequest body LoginRequest true "Login Request"
+// @Success 200 {object} LoginResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 401 {object} ErrorResponse
+// @Router /login [post]
 func Login(jwtSecret string, userService service.UserService) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var loginReq LoginRequest
@@ -50,10 +76,15 @@ func Login(jwtSecret string, userService service.UserService) fiber.Handler {
 		c.Locals("userRole", user.Role)
 		c.Locals("userPermissions", user.Permissions)
 
-		return c.JSON(fiber.Map{"token": t})
+		return c.JSON(LoginResponse{Token: t})
 	}
 }
 
+// @Summary Profile
+// @Description Get user profile information
+// @Produce json
+// @Success 200 {object} ProfileResponse
+// @Router /profile [get]
 func Profile(c *fiber.Ctx) error {
-	return c.JSON(fiber.Map{"message": "Welcome to your profile!"})
+	return c.JSON(ProfileResponse{Message: "Welcome to your profile!"})
 }

@@ -10,6 +10,7 @@ import (
 	"project/pkg/seeder"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	fiberSwagger "github.com/swaggo/fiber-swagger"
 )
@@ -51,6 +52,13 @@ func main() {
 
 	// Inisialisasi Fiber
 	app := fiber.New()
+
+	// Menambahkan middleware CORS {tambahkan url FE jika sudah ada nanti misalkan http://localhost:3000}
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:8080,http://127.0.0.1:8080", // Ganti dengan URL yang Anda gunakan untuk frontend
+		AllowMethods: "GET,POST,PUT,DELETE",
+		AllowHeaders: "Origin,Content-Type,Authorization",
+	}))
 
 	// // Inisialisasi validator
 	// app.Validator = validator.NewValidator()
